@@ -9,7 +9,7 @@ import java.util.List;
 
 public class WeatherClient {
     private final WebClient webClient;
-    private final String apiKey = "MYuoNZkGQvP4XyhLg5NOSrQK5utHAZAU";
+    private final String apiKey = "";
     private final String language = "pl";
     private final String api_url = "http://dataservice.accuweather.com";
     private final String autocomplete_endpoint = "locations/v1/cities/autocomplete?apikey=%s&q=%s&language=%s";
