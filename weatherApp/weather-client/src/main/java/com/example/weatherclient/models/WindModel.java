@@ -6,11 +6,9 @@ import lombok.Data;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 @Data
-public class GeoPositionModel {
-    @JsonProperty("Latitude")
-    private float Latitude;
-    @JsonProperty("Longitude")
-    private float Longitude;
-    @JsonProperty("Elevation")
-    private ElevationModel Elevation;
+public class WindModel {
+    @JsonProperty("Direction")
+    private DirectionModel Direction;
+    @JsonProperty("Speed")
+    private SpeedModel Speed;
 }

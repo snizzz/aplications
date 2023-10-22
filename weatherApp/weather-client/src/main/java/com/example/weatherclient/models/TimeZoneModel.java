@@ -7,7 +7,7 @@ import lombok.Data;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 @Data
-public class TimeZone {
+public class TimeZoneModel {
     @JsonProperty("Name")
     private String Name;
 }

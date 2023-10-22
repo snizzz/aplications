@@ -8,23 +8,25 @@ import lombok.Data;
 @Data
 public class CityModel {
 	@JsonProperty("Version")
-	int Version;
+	private int Version;
 	@JsonProperty("Key")
-	String Key;
+	private String Key;
 	@JsonProperty("Type")
-	String Type;
+	private String Type;
 	@JsonProperty("Rank")
-	int Rank;
+	private int Rank;
 	@JsonProperty("LocalizedName")
-	String LocalizedName;
+	private String LocalizedName;
 	@JsonProperty("Country")
-	CountryModel Country;
+	private CountryModel Country;
 	@JsonProperty("AdministrativeArea")
-	AdministrativeAreaModel AdministrativeArea;
+	private AdministrativeAreaModel AdministrativeArea;
 	@JsonProperty("GeoPosition")
-	GeoPositionModel GeoPosition;
+	private GeoPositionModel GeoPosition;
 	@JsonProperty("TimeZone")
-	TimeZone TimeZone;
+	private TimeZoneModel TimeZone;
+	@JsonProperty("Details")
+	private DetailsModel Details;
 
 	@Override
 	public String toString(){

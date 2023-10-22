@@ -6,9 +6,7 @@ import lombok.Data;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 @Data
-public class Elevation {
-    @JsonProperty("Metric")
-    private MetricModel Metric;
-    @JsonProperty("Imperial")
-    private ImperialModel Imperial;
+public class DetailsModel {
+    @JsonProperty("Population")
+    private int Population;
 }

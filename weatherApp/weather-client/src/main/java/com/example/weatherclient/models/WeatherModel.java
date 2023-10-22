@@ -11,8 +11,8 @@ import lombok.Data;
 public class WeatherModel {
     @JsonProperty("LocalObservationDateTime ")
     private LocalDateTime LocalObservationDateTime;
-    @JsonProperty("EpochTime ")
-    private int EpochTime;
+    @JsonProperty("EpochTime")
+    private long EpochTime;
     @JsonProperty("WeatherText ")
     private String WeatherText;
     @JsonProperty("WeatherIcon ")
@@ -29,4 +29,10 @@ public class WeatherModel {
     private String MobileLink;
     @JsonProperty("Link")
     private String Link;
+    @JsonProperty("RelativeHumidity")
+    private int RelativeHumidity;
+    @JsonProperty("Wind")
+    private WindModel Wind;
+    @JsonProperty("Pressure")
+    private PressureModel Pressure;
 }
