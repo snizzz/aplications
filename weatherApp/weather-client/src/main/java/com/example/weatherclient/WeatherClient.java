@@ -11,7 +11,7 @@ import java.util.Objects;
 
 public class WeatherClient {
     private final WebClient webClient;
-    private final String apiKey = "Of3GRMJ6SaczIjfFVEHddAl4E3AiWSsQ";
+    private final String apiKey = "";
     private final String language = "pl";
     private final String api_url = "http://dataservice.accuweather.com";
     private final String autocomplete = "locations/v1/cities/autocomplete?apikey=%s&q=%s&language=%s";
