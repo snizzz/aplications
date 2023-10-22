@@ -1,5 +1,6 @@
-package com.example.weatherui;
+package com.example.weatherui.core;
 
+import com.example.weatherui.WeatherApplication;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.stage.Stage;

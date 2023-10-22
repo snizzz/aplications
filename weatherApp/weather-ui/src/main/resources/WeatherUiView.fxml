@@ -8,7 +8,7 @@
 <?import javafx.scene.control.TreeView?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane minHeight="600.0" minWidth="600.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.weatherui.WeatherUiController">
+<AnchorPane minHeight="600.0" minWidth="600.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.weatherui.view.WeatherUiController">
    <Button fx:id="searchButton" layoutX="129.0" layoutY="46.0" mnemonicParsing="false" onMouseClicked="#search" prefHeight="25.0" prefWidth="71.0" text="Wyszukaj" />
    <TextField fx:id="searchText" layoutX="10.0" layoutY="46.0" prefHeight="25.0" prefWidth="118.0" />
    <ListView fx:id="searchResults" layoutX="10.0" layoutY="71.0" onMouseClicked="#searchResultClicked" prefHeight="176.0" prefWidth="190.0" />
@@ -16,7 +16,7 @@
    <Label fx:id="searchLabel" layoutX="16.0" layoutY="23.0" text="Wyszukaj i wybierz lokacje:" />
    <Label fx:id="selectedLabel" layoutX="214.0" layoutY="23.0" prefHeight="17.0" prefWidth="196.0" text="Wybrane Lokacje:" />
    <Label fx:id="optionsLabel" layoutX="415.0" layoutY="23.0" prefHeight="17.0" prefWidth="184.0" text="Opcje dla wybranych lokacji:" />
-   <Button fx:id="resetSelectedButton" layoutX="415.0" layoutY="46.0" mnemonicParsing="false" onMouseClicked="#resetSelected" prefHeight="25.0" prefWidth="178.0" text="Resetuj wybrane lokacje" />
+   <Button fx:id="resetSelectedButton" layoutX="415.0" layoutY="46.0" mnemonicParsing="false" onMouseClicked="#resetSelected" prefHeight="25.0" prefWidth="178.0" text="Resetuj" />
    <Button fx:id="currentConditionsButton" layoutX="415.0" layoutY="71.0" mnemonicParsing="false" onMouseClicked="#currentConditions" prefHeight="25.0" prefWidth="178.0" text="Obecna pogoda sync" />
    <Button fx:id="conditionsPast6HoursButton" layoutX="415.0" layoutY="171.0" mnemonicParsing="false" onMouseClicked="#conditionsPast6Hours" prefHeight="25.0" prefWidth="178.0" text="Pogoda ostanie 6h" />
    <Button fx:id="conditionsPast24HoursButton" layoutX="415.0" layoutY="196.0" mnemonicParsing="false" onMouseClicked="#conditionsPast24Hours" prefHeight="25.0" prefWidth="178.0" text="Pogoda ostanie 24h" />

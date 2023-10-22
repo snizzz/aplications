@@ -1,76 +1,115 @@
-package com.example.weatherui;
+package com.example.weatherui.viewModel;
 
 import com.example.weatherclient.WeatherClient;
 import com.example.weatherclient.models.CityModel;
 import com.example.weatherclient.models.WeatherModel;
-import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
-import javafx.scene.chart.LineChart;
-import javafx.scene.control.*;
-import javafx.scene.input.MouseButton;
-import javafx.scene.input.MouseEvent;
-import javafx.scene.text.Text;
+import javafx.beans.property.*;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.scene.control.TreeItem;
 import javafx.util.Pair;
-import org.springframework.context.annotation.Import;
-import org.springframework.stereotype.Component;
+import lombok.Getter;
 
-import java.net.URL;
 import java.time.Instant;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
-@Component
-@Import(com.example.weatherclient.ClientConfiguration.class)
-public class WeatherUiController implements Initializable {
-    @FXML
-    public LineChart<String, Double> chart;
-    @FXML
-    public ListView<CityModel> searchResults;
-    @FXML
-    public Button searchButton;
-    @FXML
-    public TextField searchText;
-
-    private final WeatherClient weatherClient;
-    @FXML
-    public ListView<CityModel> selectedLocations;
-    @FXML
-    public Label optionsLabel;
-    @FXML
-    public Label selectedLabel;
-    @FXML
-    public Label searchLabel;
-    @FXML
-    public Button currentConditionsButton;
-    @FXML
-    public Button resetSelectedButton;
-    @FXML
-    public Button conditionsPast6HoursButton;
-    @FXML
-    public Button conditionsPast24HoursButton;
-    @FXML
-    public Button locationDetailsButton;
-    @FXML
-    public Button currentConditionsAsyncButton;
-    @FXML
-    public Button currentConditionsAsync1Button;
-    @FXML
-    public Button currentConditionsAsync2Button;
-    @FXML
-    public Label resultFieldLabel;
-    @FXML
-    public Button restetSelectedButton;
-    @FXML
-    public TreeView<String> resultField;
-    public Label resultFieldLabel1;
-    @FXML
-    public TextArea loggerField;
+public class WeatherUiViewModel {
+    private BooleanProperty currentConditionsButton;
+    private BooleanProperty resetSelectedButton;
+    private BooleanProperty conditionsPast6HoursButton;
+    private BooleanProperty conditionsPast24HoursButton;
+    private BooleanProperty locationDetailsButton;
+    private BooleanProperty currentConditionsAsyncButton;
+    private BooleanProperty currentConditionsAsync1Button;
+    private BooleanProperty currentConditionsAsync2Button;
+    private ObjectProperty<TreeItem<String>> resultFieldRoot;
+    private StringProperty loggerField;
+    private StringProperty searchText;
+    private WeatherClient weatherClient;
     private String messages= "";
+    @Getter
+    private ObservableList<CityModel> selectedLocations;
+    @Getter
+    private ObservableList<CityModel> searchResults;
 
+    public BooleanProperty currentConditionsButtonProperty() {
+        return currentConditionsButton;
+    }
+    public BooleanProperty resetSelectedButtonProperty() {
+        return resetSelectedButton;
+    }
+    public BooleanProperty conditionsPast6HoursButtonProperty() {
+        return conditionsPast6HoursButton;
+    }
+    public BooleanProperty conditionsPast24HoursButtonProperty() {
+        return conditionsPast24HoursButton;
+    }
+    public BooleanProperty locationDetailsButtonProperty() {
+        return locationDetailsButton;
+    }
+    public BooleanProperty currentConditionsAsyncButtonProperty() {
+        return currentConditionsAsyncButton;
+    }
+    public BooleanProperty currentConditionsAsync1ButtonProperty() {
+        return currentConditionsAsync1Button;
+    }
+    public BooleanProperty currentConditionsAsync2ButtonProperty() {
+        return currentConditionsAsync2Button;
+    }
+    public ObjectProperty<TreeItem<String>> resultFieldRootProperty() {
+        return resultFieldRoot;
+    }
+    public StringProperty loggerFieldProperty() {
+        return loggerField;
+    }
+    public StringProperty searchTextProperty() {
+        return searchText;
+    }
+
+    public WeatherUiViewModel(WeatherClient weatherClient) {
+        this.weatherClient = weatherClient;
+        this.currentConditionsButton = new SimpleBooleanProperty(true);
+        this.resetSelectedButton = new SimpleBooleanProperty(true);
+        this.conditionsPast6HoursButton = new SimpleBooleanProperty(true);
+        this.conditionsPast24HoursButton = new SimpleBooleanProperty(true);
+        this.locationDetailsButton = new SimpleBooleanProperty(true);
+        this.currentConditionsAsyncButton = new SimpleBooleanProperty(true);
+        this.currentConditionsAsync1Button = new SimpleBooleanProperty(true);
+        this.currentConditionsAsync2Button = new SimpleBooleanProperty(true);
+        this.resultFieldRoot =  new SimpleObjectProperty<>(new TreeItem<>("Root"));
+        this.loggerField = new SimpleStringProperty();
+        this.searchText = new SimpleStringProperty();
+
+        selectedLocations = FXCollections.observableArrayList();
+        searchResults = FXCollections.observableArrayList();
+    }
+
+    private void enableButtons() {
+        currentConditionsButton.set(false);
+        resetSelectedButton.set(false);
+        conditionsPast6HoursButton.set(false);
+        conditionsPast24HoursButton.set(false);
+        locationDetailsButton.set(false);
+        currentConditionsAsyncButton.set(false);
+        currentConditionsAsync1Button.set(false);
+        currentConditionsAsync2Button.set(false);
+    }
+    private void disableButtons() {
+        currentConditionsButton.set(true);
+        resetSelectedButton.set(true);
+        conditionsPast6HoursButton.set(true);
+        conditionsPast24HoursButton.set(true);
+        locationDetailsButton.set(true);
+        currentConditionsAsyncButton.set(true);
+        currentConditionsAsync1Button.set(true);
+        currentConditionsAsync2Button.set(true);
+    }
     private TreeItem<String> prepareWeatherTreeView(WeatherModel weather, String locationName) {
         TreeItem<String> root = new TreeItem<>(locationName);
 
@@ -98,12 +137,6 @@ public class WeatherUiController implements Initializable {
 
         return root;
     }
-
-    private void addToLog(String s){
-        messages = messages + "\n" + s + "\n";
-        loggerField.setText(messages);
-    }
-
     private TreeItem<String> prepareLocationDetailsTreeView(CityModel location) {
         TreeItem<String> root = new TreeItem<>(location.toString());
 
@@ -118,47 +151,13 @@ public class WeatherUiController implements Initializable {
         String sLongitude = longitude<0?longitude*(-1.0)+"W":longitude+"E";
 
         TreeItem<String> geoPosition = new TreeItem<>("Współrzędne geograficzne: " + sLatitude+" "+sLongitude );
-        TreeItem<String> elevation = new TreeItem<>("Wysokość n.p.m: " + location.getGeoPosition().getElevation());
+        TreeItem<String> elevation = new TreeItem<>("Wysokość n.p.m: " + location.getGeoPosition().getElevation().getMetric().getValue());
         TreeItem<String> timeZone = new TreeItem<>("Strefa czasowa: " + location.getTimeZone().getName());
 
         root.getChildren().addAll(country,adminArea,type, population, geoPosition,elevation,timeZone);
 
         return root;
     }
-
-    public WeatherUiController(WeatherClient weatherClient) {
-        this.weatherClient = weatherClient;
-    }
-
-    public void search(MouseEvent mouseEvent) {
-        searchResults.getItems().clear();
-        String search = searchText.getText();
-        addToLog("Wyszukiwanie: "+search);
-        List<CityModel> searchResult = weatherClient.searchAutocomplete(search);
-        for (CityModel city : searchResult) {
-            searchResults.getItems().add(city);
-        }
-        addToLog("Zakończono wyszukiwanie: "+search);
-    }
-
-    public void resetSelected(MouseEvent mouseEvent) {
-        selectedLocations.getItems().clear();
-        resultField.setRoot(null);
-    }
-
-    public void conditionsPast6Hours(MouseEvent mouseEvent) {
-        resultField.setRoot(new TreeItem<>("Root"));
-        List<CityModel> selected = selectedLocations.getItems();
-        for (CityModel city : selected) {
-            addToLog("Przygotowywanie warunków pogodowych z ostatnich 6h dla "+city.toString() + " ...");
-            List<WeatherModel> conditionsPast6Hours = weatherClient.conditionsPast6Hours(city);
-            addToLog("Zakończono pobieranie danych");
-            addToLog("Wyświetlanie ...");
-            displayPastConditions(city, conditionsPast6Hours);
-            addToLog("Zakończono przygotowywanie");
-        }
-    }
-
     private void displayPastConditions(CityModel city, List<WeatherModel> pastConditions) {
         TreeItem<String> location = new TreeItem<>(city.toString());
         double minTemp = Double.POSITIVE_INFINITY;
@@ -187,13 +186,45 @@ public class WeatherUiController implements Initializable {
         TreeItem<String> minTempItem = new TreeItem<>("Minimalna temperatura w stopniach Celsjusza:  "+minTemp);
         TreeItem<String> maxTempItem = new TreeItem<>("Maksymalna temperatura w stopniach Celsjusza: "+maxTemp);
         location.getChildren().addAll(0, new ArrayList<>(Arrays.asList(minTempItem, maxTempItem)));
-        resultField.getRoot().getChildren().add(location);
+        resultFieldRoot.getValue().getChildren().add(location);
+    }
+    private void addToLog(String s){
+        messages = messages + "\n" + s + "\n";
+        loggerField.set(messages);
     }
 
-    public void conditionsPast24Hours(MouseEvent mouseEvent) {
-        resultField.setRoot(new TreeItem<>("Root"));
-        List<CityModel> selected = selectedLocations.getItems();
-        for (CityModel city : selected) {
+    public void resetSelected(){
+        selectedLocations.clear();
+        resultFieldRoot.setValue(new TreeItem<>("Root"));
+        disableButtons();
+    }
+    public void search() {
+        searchResults.clear();
+        String search = searchText.getValue();
+        addToLog("Wyszukiwanie: "+search);
+        List<CityModel> searchResult = weatherClient.searchAutocomplete(search);
+        searchResults.addAll(searchResult);
+        addToLog("Zakończono wyszukiwanie: "+search);
+    }
+    public void searchResultClicked(CityModel selectedItem) {
+        selectedLocations.add(selectedItem);
+        enableButtons();
+    }
+
+    public void conditionsPast6Hours() {
+        resultFieldRoot.setValue(new TreeItem<>("Root"));
+        for (CityModel city : selectedLocations) {
+            addToLog("Przygotowywanie warunków pogodowych z ostatnich 6h dla "+city.toString() + " ...");
+            List<WeatherModel> conditionsPast6Hours = weatherClient.conditionsPast6Hours(city);
+            addToLog("Zakończono pobieranie danych");
+            addToLog("Wyświetlanie ...");
+            displayPastConditions(city, conditionsPast6Hours);
+            addToLog("Zakończono przygotowywanie");
+        }
+    }
+    public void conditionsPast24Hours() {
+        resultFieldRoot.setValue(new TreeItem<>("Root"));
+        for (CityModel city : selectedLocations) {
             addToLog("Przygotowywanie warunków pogodowych z ostatnich 24h dla "+city.toString() + " ...");
             List<WeatherModel> conditionsPast24Hours = weatherClient.conditionsPast24Hours(city);
             addToLog("Zakończono pobieranie danych");
@@ -203,60 +234,52 @@ public class WeatherUiController implements Initializable {
         }
     }
 
-    public void locationDetails(MouseEvent mouseEvent) {
-        resultField.setRoot(new TreeItem<>("Root"));
-        List<CityModel> selected = selectedLocations.getItems();
-        for (CityModel city : selected) {
+    public void locationDetails() {
+        resultFieldRoot.setValue(new TreeItem<>("Root"));
+        for (CityModel city : selectedLocations) {
             CityModel locationDetailed = weatherClient.locationDetails(city);
 
             TreeItem<String> item = prepareLocationDetailsTreeView(locationDetailed);
-            resultField.getRoot().getChildren().add(item);
+            resultFieldRoot.getValue().getChildren().add(item);
         }
     }
 
-    public void currentConditions(MouseEvent mouseEvent) {
-        resultField.setRoot(new TreeItem<>("Root"));
-        List<CityModel> selected = selectedLocations.getItems();
-        for (CityModel city : selected) {
+    public void currentConditions() {
+        resultFieldRoot.setValue(new TreeItem<>("Root"));
+        for (CityModel city : selectedLocations) {
             addToLog("Przygotowywanie warunków dla "+city.toString() + " ...");
             WeatherModel weather = weatherClient.currentConditions(city);
             addToLog("Zakończono pobieranie danych");
             addToLog("Wyświetlanie ...");
             TreeItem<String> item = prepareWeatherTreeView(weather, city.toString());
-            resultField.getRoot().getChildren().add(item);
+            resultFieldRoot.getValue().getChildren().add(item);
             addToLog("Zakończono przygotowywanie");
         }
-
     }
 
-    //Scenariusz 1: Zapytania asynchronicznie, po zakończeniu wykonywania od razu wypisz.
-    public void currentConditionsAsync(MouseEvent mouseEvent) {
-        resultField.setRoot(new TreeItem<>("Root"));
-        List<CityModel> selected = selectedLocations.getItems();
-
-        for (CityModel city : selected) {
+    public void currentConditionsAsync() {
+        resultFieldRoot.setValue(new TreeItem<>("Root"));
+        for (CityModel city : selectedLocations) {
             addToLog("Przygotowywanie warunków dla "+city.toString() + " ...");
             CompletableFuture.runAsync(() -> {
                 WeatherModel weather = weatherClient.currentConditions(city);
                 TreeItem<String> item = prepareWeatherTreeView(weather, city.toString());
-                resultField.getRoot().getChildren().add(item);
-                addToLog("Zakończono przygotowywanie warunków dla "+city.toString());
+                resultFieldRoot.getValue().getChildren().add(item);
+                addToLog("Zakończono przygotowywanie warunków dla "+ city);
             });
         }
     }
 
-    //Scenariusz 2: Zapytania asynchronicznie, zaczekaj na zakończenie każdego i wtedy wypisz.
-    public void currentConditionsAsync1(MouseEvent mouseEvent) {
-        resultField.setRoot(new TreeItem<>("Root"));
-        List<CityModel> selected = selectedLocations.getItems();
+    public void currentConditionsAsync1() {
+        resultFieldRoot.setValue(new TreeItem<>("Root"));
 
         List<CompletableFuture<WeatherModel>> temperatureFutures = new ArrayList<>();
 
-        for (CityModel city : selected) {
+        for (CityModel city : selectedLocations) {
             addToLog("Przygotowywanie warunków dla "+city.toString() + " ...");
             CompletableFuture<WeatherModel> temperatureFuture = CompletableFuture.supplyAsync(() -> {
                 WeatherModel weather =  weatherClient.currentConditions(city);
-                addToLog("Zakończono przygotowywanie warunków dla "+city.toString());
+                addToLog("Zakończono przygotowywanie warunków dla "+ city);
                 return weather;
             });
             temperatureFutures.add(temperatureFuture);
@@ -267,19 +290,17 @@ public class WeatherUiController implements Initializable {
         allOf.thenRun(() -> {
             for (CompletableFuture<WeatherModel> temperatureFuture : temperatureFutures) {
                 TreeItem<String> item = prepareWeatherTreeView(temperatureFuture.join(), "...");
-                resultField.getRoot().getChildren().add(item);
+                resultFieldRoot.getValue().getChildren().add(item);
             }
         });
     }
 
-    //Scenariusz 3: Zapytania asynchronicznie zapamiętujące miasto, zaczekaj na zakończenie każdego i wtedy wypisz.
-    public void currentConditionsAsync2(MouseEvent mouseEvent) {
-        resultField.setRoot(new TreeItem<>("Root"));
-        List<CityModel> selected = selectedLocations.getItems();
+    public void currentConditionsAsync2() {
+        resultFieldRoot.setValue(new TreeItem<>("Root"));
 
         List<CompletableFuture<Pair<CityModel,WeatherModel>>> temperatureFutures = new ArrayList<>();
 
-        for (CityModel city : selected) {
+        for (CityModel city : selectedLocations) {
             addToLog("Przygotowywanie warunków dla "+city.toString() + " ...");
             CompletableFuture<Pair<CityModel,WeatherModel>> temperatureFuture = CompletableFuture.supplyAsync(() -> {
                 Pair<CityModel,WeatherModel> res = new Pair<>(city, weatherClient.currentConditions(city));
@@ -295,24 +316,8 @@ public class WeatherUiController implements Initializable {
         allOf.thenRun(() -> {
             for (CompletableFuture<Pair<CityModel,WeatherModel>> temperatureFuture : temperatureFutures) {
                 TreeItem<String> item = prepareWeatherTreeView(temperatureFuture.join().getValue(), temperatureFuture.join().getKey().toString());
-                resultField.getRoot().getChildren().add(item);
+                resultFieldRoot.getValue().getChildren().add(item);
             }
         });
-    }
-
-    public void searchResultClicked(MouseEvent mouseEvent) {
-        if (mouseEvent.getButton() == MouseButton.PRIMARY && mouseEvent.getClickCount() == 2) {
-
-            CityModel selectedItem = searchResults.getSelectionModel().getSelectedItem();
-            if (selectedItem != null) {
-                selectedLocations.getItems().add(selectedItem);
-            }
-        }
-    }
-
-    @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
-        resultField.setRoot(new TreeItem<>("Root"));
-        resultField.setShowRoot(false);
     }
 }

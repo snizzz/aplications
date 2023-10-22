@@ -1,5 +1,6 @@
 package com.example.weatherui;
 
+import com.example.weatherui.core.WeatherUiApplication;
 import javafx.application.Application;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
