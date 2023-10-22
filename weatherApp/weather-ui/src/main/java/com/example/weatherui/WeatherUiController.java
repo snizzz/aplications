@@ -9,6 +9,7 @@ import javafx.scene.chart.LineChart;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.text.Text;
 import javafx.util.Pair;
 import org.springframework.context.annotation.Import;
 import org.springframework.stereotype.Component;
@@ -67,7 +68,8 @@ public class WeatherUiController implements Initializable {
     public TreeView<String> resultField;
     public Label resultFieldLabel1;
     @FXML
-    public TextField loggerField;
+    public TextArea loggerField;
+    private String messages= "";
 
     private TreeItem<String> prepareWeatherTreeView(WeatherModel weather, String locationName) {
         TreeItem<String> root = new TreeItem<>(locationName);
@@ -80,7 +82,7 @@ public class WeatherUiController implements Initializable {
         TreeItem<String> humidity = new TreeItem<>("Wilgotność: " + weather.getRelativeHumidity());
 
         TreeItem<String> wind = new TreeItem<>("Wiatr");
-        TreeItem<String> speed = new TreeItem<>("Prędkość: "+weather.getWind().getSpeed().getMetric()+"km/h");
+        TreeItem<String> speed = new TreeItem<>("Prędkość: "+weather.getWind().getSpeed().getMetric().getValue()+"km/h");
         TreeItem<String> direction = new TreeItem<>("Kierunek: "+weather.getWind().getDirection().toString());
         wind.getChildren().addAll(speed, direction);
 
@@ -98,8 +100,8 @@ public class WeatherUiController implements Initializable {
     }
 
     private void addToLog(String s){
-        String text = loggerField.getText();
-        text = text + s + "\n";
+        messages = messages + "\n" + s + "\n";
+        loggerField.setText(messages);
     }
 
     private TreeItem<String> prepareLocationDetailsTreeView(CityModel location) {
@@ -142,7 +144,6 @@ public class WeatherUiController implements Initializable {
     public void resetSelected(MouseEvent mouseEvent) {
         selectedLocations.getItems().clear();
         resultField.setRoot(null);
-        loggerField.setText("");
     }
 
     public void conditionsPast6Hours(MouseEvent mouseEvent) {
@@ -313,6 +314,5 @@ public class WeatherUiController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         resultField.setRoot(new TreeItem<>("Root"));
         resultField.setShowRoot(false);
-        loggerField.setText("");
     }
 }

@@ -18,7 +18,7 @@ public class WeatherClient {
     private final String past6hoursConditions = "currentconditions/v1/%s/historical?apikey=%s&language=%s&details=true";
     private final String past24hoursConditions = "currentconditions/v1/%s/historical/24?apikey=%s&language=%s&details=true";
     private final String currentConditions = "currentconditions/v1/%s?apikey=%s&language=%s&details=true";
-    private final String locationDetails = "locations/v1/%s?apikey=%s&language=%s&details=tru";
+    private final String locationDetails = "locations/v1/%s?apikey=%s&language=%s&details=true";
 
     public WeatherClient(WebClient webClient) {
         this.webClient = webClient;
