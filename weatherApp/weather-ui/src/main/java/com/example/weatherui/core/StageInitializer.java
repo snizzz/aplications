@@ -1,5 +1,8 @@
-package com.example.weatherui;
+package com.example.weatherui.core;
 
+import com.example.weatherclient.WeatherClient;
+import com.example.weatherui.view.WeatherUiController;
+import com.example.weatherui.viewModel.WeatherUiViewModel;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -9,7 +12,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationListener;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Component;
-import com.example.weatherui.WeatherUiApplication.StageReadyEvent;
+import com.example.weatherui.core.WeatherUiApplication.StageReadyEvent;
 
 import java.io.IOException;
 
@@ -17,7 +20,7 @@ import java.io.IOException;
 public class StageInitializer implements ApplicationListener<StageReadyEvent> {
 
 
-    @Value("classpath:/weatherApp.fxml")
+    @Value("classpath:/WeatherUiView.fxml")
     private Resource applicationResource;
     private ApplicationContext applicationContext;
     private final String applicationTitle;
@@ -31,8 +34,10 @@ public class StageInitializer implements ApplicationListener<StageReadyEvent> {
     public void onApplicationEvent(StageReadyEvent event) {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(applicationResource.getURL());
-            fxmlLoader.setControllerFactory(aClass -> applicationContext.getBean(aClass));
             Parent parent = fxmlLoader.load();
+
+            WeatherUiController ctrl = fxmlLoader.getController();
+            ctrl.init(new WeatherUiViewModel(applicationContext.getBean(WeatherClient.class)));
 
             Stage stage = event.getStage();
             stage.setScene(new Scene(parent, 600, 600));
