@@ -50,6 +50,8 @@ public class WeatherUiController{
     public Label resultFieldLabel1;
     @FXML
     public TextArea loggerField;
+    @FXML
+    public Button openDiaryButton;
     private WeatherUiViewModel viewModel;
 
     public void search(MouseEvent mouseEvent) {
@@ -126,5 +128,9 @@ public class WeatherUiController{
         searchResults.setItems(viewModel.getSearchResults());
 
         loggerField.textProperty().bind(viewModel.loggerFieldProperty());
+    }
+
+    public void openWeatherDiary(MouseEvent mouseEvent) {
+        viewModel.openDiary();
     }
 }

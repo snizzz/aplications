@@ -22,7 +22,6 @@ public class DiaryEntryController {
     @GetMapping("/all")
     public ResponseEntity<ServiceResponse<List<DiaryEntry>>> findAll(){
         ServiceResponse<List<DiaryEntry>> response = service.findAll();
-
         if (response.isSuccess()) {
             return ResponseEntity.ok(response);
         } else {
@@ -44,7 +43,7 @@ public class DiaryEntryController {
     @PostMapping
     public ResponseEntity<ServiceResponse<DiaryEntry>> createEntry(@RequestBody DiaryEntry entry) {
         ServiceResponse<DiaryEntry> response = service.createEntry(entry);
-
+        System.out.println(entry);
         if (response.isSuccess()) {
             return ResponseEntity.ok(response);
         } else {
@@ -54,6 +53,7 @@ public class DiaryEntryController {
 
     @PutMapping("/{id}")
     public ResponseEntity<ServiceResponse<DiaryEntry>> updateEntry(@PathVariable Long id, @RequestBody DiaryEntry entry) {
+        System.out.println(entry);
         ServiceResponse<DiaryEntry> response = service.updateEntry(id,entry);
 
         if (response.isSuccess()) {

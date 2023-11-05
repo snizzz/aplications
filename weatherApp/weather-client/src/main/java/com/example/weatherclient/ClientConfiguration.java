@@ -12,6 +12,10 @@ public class ClientConfiguration {
     public WeatherClient weatherClient(WebClient webClient){
         return new WeatherClient(webClient);
     }
+    @Bean
+    public WeatherDiaryClient weatherDiaryClient(WebClient webClient){
+        return new WeatherDiaryClient(webClient);
+    }
 
     @Bean
     @ConditionalOnMissingBean

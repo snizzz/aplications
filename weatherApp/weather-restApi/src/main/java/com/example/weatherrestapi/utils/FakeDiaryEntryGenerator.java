@@ -18,7 +18,7 @@ public class FakeDiaryEntryGenerator {
             entry.setDescription(faker.weather().description());
             entry.setLocation(faker.address().city());
             entry.setWeatherType(faker.weather().description());
-            entry.setTemperature(Integer.getInteger(faker.weather().temperatureCelsius()));
+            entry.setTemperature(faker.number().numberBetween(-40,60));
 
             return entry;
         } catch (Exception e) {

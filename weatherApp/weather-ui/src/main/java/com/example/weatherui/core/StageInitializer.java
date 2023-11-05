@@ -1,6 +1,7 @@
 package com.example.weatherui.core;
 
 import com.example.weatherclient.WeatherClient;
+import com.example.weatherclient.WeatherDiaryClient;
 import com.example.weatherui.view.WeatherUiController;
 import com.example.weatherui.viewModel.WeatherUiViewModel;
 import javafx.fxml.FXMLLoader;
@@ -37,7 +38,7 @@ public class StageInitializer implements ApplicationListener<StageReadyEvent> {
             Parent parent = fxmlLoader.load();
 
             WeatherUiController ctrl = fxmlLoader.getController();
-            ctrl.init(new WeatherUiViewModel(applicationContext.getBean(WeatherClient.class)));
+            ctrl.init(new WeatherUiViewModel(applicationContext.getBean(WeatherClient.class), applicationContext.getBean(WeatherDiaryClient.class)));
 
             Stage stage = event.getStage();
             stage.setScene(new Scene(parent, 600, 600));

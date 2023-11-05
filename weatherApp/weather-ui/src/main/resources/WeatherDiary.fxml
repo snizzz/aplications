@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<GridPane alignment="CENTER" hgap="10" vgap="10" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.weatherui.view.WeatherDiaryUiController">
+
+    <!-- CRUD section -->
+    <VBox spacing="10" GridPane.columnIndex="0" GridPane.rowIndex="0">
+        <Label text="ID:" />
+        <TextField fx:id="idField" />
+        <Label text="Title:" />
+        <TextField fx:id="titleField" />
+        <Label text="Description:" />
+        <TextField fx:id="descriptionField" />
+        <Label text="Location:" />
+        <TextField fx:id="locationField" />
+        <Label text="Weather Type:" />
+        <HBox>
+            <TextField fx:id="customWeatherTypeField" promptText="Weather type" />
+        </HBox>
+        <Label text="Temperature:" />
+        <TextField fx:id="temperatureField" />
+        <HBox spacing="10">
+            <Button onAction="#addEntry" prefHeight="25.0" prefWidth="51.0" text="Add" />
+            <Button onAction="#clearFields" prefHeight="25.0" prefWidth="63.0" text="Clear" />
+            <Button onAction="#updateEntry" prefHeight="25.0" prefWidth="95.0" text="Update by id" />
+        </HBox>
+    </VBox>
+
+    <!-- Get All Entries section -->
+    <VBox spacing="10" GridPane.columnIndex="1" GridPane.rowIndex="0">
+        <Label text="Get All Entries" />
+        <Button onAction="#getAllEntries" text="Get All" />
+        <Pagination fx:id="pagination" prefHeight="329.0" prefWidth="200.0" />
+    </VBox>
+
+    <!-- Find Entry by ID section -->
+    <VBox spacing="10" GridPane.columnIndex="2" GridPane.rowIndex="0">
+        <Label text="Find or delete Entry by ID" />
+        <HBox spacing="10">
+            <TextField fx:id="entryIdField" promptText="Enter ID" />
+            <Button onAction="#findEntryById" text="Find" />
+            <Button onAction="#deleteEntry" text="Delete" />
+        </HBox>
+        <Pagination fx:id="foundEntryListView" prefHeight="329.0" prefWidth="200.0" />
+    </VBox>
+   <columnConstraints>
+      <ColumnConstraints />
+      <ColumnConstraints />
+      <ColumnConstraints />
+   </columnConstraints>
+   <rowConstraints>
+      <RowConstraints />
+   </rowConstraints>
+</GridPane>

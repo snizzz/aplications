@@ -1,15 +1,24 @@
 package com.example.weatherui.viewModel;
 
 import com.example.weatherclient.WeatherClient;
+import com.example.weatherclient.WeatherDiaryClient;
 import com.example.weatherclient.models.CityModel;
 import com.example.weatherclient.models.WeatherModel;
+import com.example.weatherui.view.WeatherDiaryUiController;
 import javafx.beans.property.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.TreeItem;
+import javafx.stage.Stage;
 import javafx.util.Pair;
 import lombok.Getter;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.Resource;
 
+import java.io.IOException;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -31,7 +40,8 @@ public class WeatherUiViewModel {
     private ObjectProperty<TreeItem<String>> resultFieldRoot;
     private StringProperty loggerField;
     private StringProperty searchText;
-    private WeatherClient weatherClient;
+    private final WeatherClient weatherClient;
+    private final WeatherDiaryClient weatherDiaryClient;
     private String messages= "";
     @Getter
     private ObservableList<CityModel> selectedLocations;
@@ -72,8 +82,9 @@ public class WeatherUiViewModel {
         return searchText;
     }
 
-    public WeatherUiViewModel(WeatherClient weatherClient) {
+    public WeatherUiViewModel(WeatherClient weatherClient, WeatherDiaryClient weatherDiaryClient) {
         this.weatherClient = weatherClient;
+        this.weatherDiaryClient = weatherDiaryClient;
         this.currentConditionsButton = new SimpleBooleanProperty(true);
         this.resetSelectedButton = new SimpleBooleanProperty(true);
         this.conditionsPast6HoursButton = new SimpleBooleanProperty(true);
@@ -319,5 +330,24 @@ public class WeatherUiViewModel {
                 resultFieldRoot.getValue().getChildren().add(item);
             }
         });
+    }
+
+    public void openDiary() {
+
+
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/WeatherDiary.fxml"));
+            Parent parent = fxmlLoader.load();
+            WeatherDiaryUiController ctrl = fxmlLoader.getController();
+
+            ctrl.init(new WeatherDiaryUiViewModel(weatherDiaryClient));
+
+            Stage stage = new Stage();
+            stage.setScene(new Scene(parent));
+            stage.setTitle("Weather diary app");
+            stage.show();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

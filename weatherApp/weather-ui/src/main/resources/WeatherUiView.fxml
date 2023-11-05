@@ -26,6 +26,7 @@
    <Button fx:id="currentConditionsAsync2Button" layoutX="415.0" layoutY="146.0" mnemonicParsing="false" onMouseClicked="#currentConditionsAsync2" prefHeight="25.0" prefWidth="178.0" text="Obecna pogoda async2" />
    <Label fx:id="resultFieldLabel" layoutX="200.0" layoutY="261.0" text="Wyniki wybranej opcji:" />
    <Label fx:id="resultFieldLabel1" layoutX="10.0" layoutY="261.0" text="Logger:" />
-   <TreeView fx:id="resultField" layoutX="194.0" layoutY="278.0" prefHeight="312.0" prefWidth="392.0" />
-   <TextArea fx:id="loggerField" layoutX="10.0" layoutY="278.0" prefHeight="312.0" prefWidth="190.0" style="-fx-wrap-text: true;" />
+   <TreeView fx:id="resultField" layoutX="194.0" layoutY="278.0" prefHeight="275.0" prefWidth="392.0" />
+   <TextArea fx:id="loggerField" layoutX="10.0" layoutY="278.0" prefHeight="275.0" prefWidth="184.0" style="-fx-wrap-text: true;" />
+   <Button fx:id="openDiaryButton" layoutX="248.0" layoutY="564.0" mnemonicParsing="false" onMouseClicked="#openWeatherDiary" text="Open diary" />
 </AnchorPane>
