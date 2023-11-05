@@ -2,7 +2,8 @@ package com.example.weatherrestapi.service.diary;
 
 import com.example.weatherrestapi.model.ServiceResponse;
 import com.example.weatherrestapi.model.diary.DiaryEntry;
-import com.example.weatherrestapi.repository.diary.DiaryEntryCodeFirstRepository;
+import com.example.weatherrestapi.repository.diary.DiaryEntryRepository;
+import com.example.weatherrestapi.utils.FakeDiaryEntryGenerator;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -11,10 +12,11 @@ import java.util.Optional;
 @Service
 public class DiaryEntryService {
 
-    private final DiaryEntryCodeFirstRepository repository;
+    private final DiaryEntryRepository repository;
 
-    public DiaryEntryService(DiaryEntryCodeFirstRepository repository){
+    public DiaryEntryService(DiaryEntryRepository repository, FakeDiaryEntryGenerator faker){
         this.repository = repository;
+        this.repository.save(faker.generateFakeObject());
     }
 
     public ServiceResponse<List<DiaryEntry>> findAll() {
@@ -38,8 +40,21 @@ public class DiaryEntryService {
 
     public ServiceResponse<DiaryEntry> updateEntry(Long id, DiaryEntry entry) {
         try {
-            DiaryEntry response = repository.update(id, entry);
-            return new ServiceResponse<>(response, true, "Updated entry");
+            Optional<DiaryEntry> response = repository.findById(id);
+            if(response.isPresent()){
+                response.get().setTitle(entry.getTitle());
+                response.get().setLocation(entry.getLocation());
+                response.get().setTemperature(entry.getTemperature());
+                response.get().setEntryDatePosixTime(entry.getEntryDatePosixTime());
+                response.get().setDescription(entry.getDescription());
+                response.get().setWeatherType(entry.getWeatherType());
+
+                repository.save(response.get());
+                return new ServiceResponse<>(response.get(), true, "Updated entry");
+            }else{
+                return new ServiceResponse<>(null, false, "Doesnt exist");
+            }
+
         } catch (Exception e) {
             return new ServiceResponse<>(null, false, e.getMessage());
         }
@@ -47,7 +62,7 @@ public class DiaryEntryService {
 
     public ServiceResponse<DiaryEntry> createEntry(DiaryEntry entry) {
         try {
-            DiaryEntry response = repository.create(entry);
+            DiaryEntry response = repository.save(entry);
             return new ServiceResponse<>(response, true, "Created entry");
         } catch (Exception e) {
             return new ServiceResponse<>(null, false, e.getMessage());
@@ -56,8 +71,8 @@ public class DiaryEntryService {
 
     public ServiceResponse<DiaryEntry> deleteEntry(Long id) {
         try {
-            DiaryEntry response = repository.delete(id);
-            return new ServiceResponse<>(response, true, "Deleted entry");
+            repository.deleteById(id);
+            return new ServiceResponse<>(null, true, "Deleted entry");
         } catch (Exception e) {
             return new ServiceResponse<>(null, false, e.getMessage());
         }

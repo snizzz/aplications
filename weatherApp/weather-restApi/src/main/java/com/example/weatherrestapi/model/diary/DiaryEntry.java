@@ -1,12 +1,13 @@
 package com.example.weatherrestapi.model.diary;
 
 
+import jakarta.persistence.Entity;
 import lombok.Data;
 
-import java.util.Objects;
-
 @Data
+@Entity
 public class DiaryEntry {
+    @jakarta.persistence.Id
     private Long id;
     private Long entryDatePosixTime;
     private String title;
@@ -18,17 +19,20 @@ public class DiaryEntry {
     public DiaryEntry(){
 
     }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        DiaryEntry that = (DiaryEntry) o;
-        return id == that.id && entryDatePosixTime == that.entryDatePosixTime && temperature == that.temperature && Objects.equals(title, that.title) && Objects.equals(description, that.description) && Objects.equals(location, that.location) && Objects.equals(weatherType, that.weatherType);
+    public DiaryEntry(Long id,
+                      Long entryDatePosixTime,
+                      String title,
+                      String description,
+                      String location,
+                      String weatherType,
+                      Integer temperature) {
+        this.id = id;
+        this.entryDatePosixTime = entryDatePosixTime;
+        this.title = title;
+        this.description = description;
+        this.location = location;
+        this.weatherType = weatherType;
+        this.temperature = temperature;
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, entryDatePosixTime, title, description, location, weatherType, temperature);
-    }
 }
