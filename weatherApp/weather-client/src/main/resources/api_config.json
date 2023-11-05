@@ -1,0 +1,7 @@
+{
+  "addEntry": "http://localhost:8080/api/diary",
+  "getAllEntries": "http://localhost:8080/api/diary/all",
+  "updateEntry": "http://localhost:8080/api/diary/{id}",
+  "findEntryById": "http://localhost:8080/api/diary/{id}",
+  "deleteEntry": "http://localhost:8080/api/diary/{id}"
+}
